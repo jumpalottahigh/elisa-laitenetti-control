@@ -1,13 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import bodyParser from 'body-parser'
+import express from 'express'
 
-const app = require('express')()
+const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { Body, From } = req.body
     console.log(`Received SMS from ${From}: ${Body}`)
