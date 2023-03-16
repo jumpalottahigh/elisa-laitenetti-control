@@ -5,7 +5,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 // app.post(bodyParser.urlencoded({ extended: false }))
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   if (req.method === 'POST') {
     const { Body, From } = req.body
     console.log(`Received SMS from ${From}: ${Body}`)
