@@ -10,28 +10,21 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import Footer from '../components/Footer'
 
-import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Card from '@mui/material/Card';
 import Switch from '@mui/material/Switch';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Chart from '../components/dashboard_components/Chart';
 import Grid from '@mui/material/Grid';
-import Icon from '@mui/material/Icon';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
