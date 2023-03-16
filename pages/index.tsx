@@ -23,9 +23,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Nav />
-      <main className={styles.main}>
-        <h1 className={styles.title}>Elisa Laittenetti Control</h1>
+      <main>
+        <h1>Elisa Laittenetti Control</h1>
         {!session ? (
           <Auth
             supabaseClient={supabase}
