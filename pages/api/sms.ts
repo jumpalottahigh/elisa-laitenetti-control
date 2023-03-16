@@ -15,5 +15,6 @@ export default async function handler(
     res.status(200).end()
   } else {
     console.log('not a post request')
+    res.status(201).end()
   }
 }
