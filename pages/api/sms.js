@@ -2,7 +2,8 @@ import bodyParser from 'body-parser'
 import express from 'express'
 
 const app = express()
-app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.urlencoded({ extended: false }))
+app.post(bodyParser.urlencoded({ extended: false }))
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
