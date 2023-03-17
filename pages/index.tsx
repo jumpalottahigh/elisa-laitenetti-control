@@ -54,8 +54,12 @@ export default function Home() {
   const [saunaState, setSaunaState] = React.useState(
     Math.random() > 0.5 ? true : false
   )
+  const [storageState, setStorageState] = React.useState(
+    Math.random() > 0.5 ? true : false
+  )
   const [heaterLoader, setHeaterLoader] = React.useState(false)
   const [saunaLoader, setSaunaLoader] = React.useState(false)
+  const [storageLoader, setStorageLoader] = React.useState(false)
 
   let timeout = null
 
@@ -114,29 +118,40 @@ export default function Home() {
       setSaunaLoader(true)
     } else if (deviceName === 'heater') {
       setHeaterLoader(true)
+    } else if (deviceName === 'storage') {
+      setStorageLoader(true)
     }
 
     timeout = setTimeout(() => {
       if (deviceName === 'sauna') {
         if (incomingState) {
-          // handleDeviceTurnOn() // TODO: reenable
+          handleDeviceTurnOn() // TODO: reenable
           setSaunaState(false)
         } else {
-          // handleDeviceTurnOff()
+          handleDeviceTurnOff()
           setSaunaState(true)
         }
         setSaunaLoader(false)
       } else if (deviceName === 'heater') {
         if (incomingState) {
-          // handleDeviceTurnOn()
+          handleDeviceTurnOn()
           setHeaterState(false)
         } else {
-          // handleDeviceTurnOff()
+          handleDeviceTurnOff()
           setHeaterState(true)
         }
         setHeaterLoader(false)
+      } else if (deviceName === 'storage') {
+        if (incomingState) {
+          handleDeviceTurnOn()
+          setStorageState(false)
+        } else {
+          handleDeviceTurnOff()
+          setStorageState(true)
+        }
+        setStorageLoader(false)
       }
-    }, 2000) // 12000
+    }, 12000)
   }
 
   React.useEffect(() => {
@@ -145,7 +160,7 @@ export default function Home() {
     }
   }, [timeout])
 
-  console.log('states: ', saunaState, heaterState, saunaLoader, heaterLoader)
+  // console.log('states: ', saunaState, heaterState, saunaLoader, heaterLoader)
 
   return (
     <div>
@@ -197,26 +212,41 @@ export default function Home() {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <div style={{ padding: '20px' }}>
-                      <Typography variant="h5" component="div">
-                        Vaja
-                      </Typography>
-                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        22ºC
-                      </Typography>
-                      {saunaLoader ? (
-                        <CircularProgress />
-                      ) : (
-                        <Switch
-                          {...switch_label}
-                          checked={saunaState}
-                          onChange={(event) =>
-                            toggleDevice(saunaState, 'sauna', event)
-                          }
-                          inputProps={{ 'aria-label': 'controlled' }}
-                          disabled={saunaLoader}
-                        />
-                      )}
+                    <div
+                      style={{
+                        padding: '20px',
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div>
+                        <Typography variant="h5" component="div">
+                          Vaja
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          22ºC
+                        </Typography>
+
+                        {saunaLoader ? (
+                          <CircularProgress />
+                        ) : (
+                          <Switch
+                            {...switch_label}
+                            checked={saunaState}
+                            onChange={(event) =>
+                              toggleDevice(saunaState, 'sauna', event)
+                            }
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            disabled={saunaLoader}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          today 8:54
+                        </Typography>
+                      </div>
                     </div>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -240,26 +270,40 @@ export default function Home() {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <div style={{ padding: '20px' }}>
-                      <Typography variant="h5" component="div">
-                        Patteri
-                      </Typography>
-                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        21ºC
-                      </Typography>
-                      {heaterLoader ? (
-                        <CircularProgress />
-                      ) : (
-                        <Switch
-                          {...switch_label}
-                          checked={heaterState}
-                          onChange={(event) =>
-                            toggleDevice(heaterState, 'heater', event)
-                          }
-                          inputProps={{ 'aria-label': 'controlled' }}
-                          disabled={heaterLoader}
-                        />
-                      )}
+                    <div
+                      style={{
+                        padding: '20px',
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div>
+                        <Typography variant="h5" component="div">
+                          Patteri
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          21ºC
+                        </Typography>
+                        {heaterLoader ? (
+                          <CircularProgress />
+                        ) : (
+                          <Switch
+                            {...switch_label}
+                            checked={heaterState}
+                            onChange={(event) =>
+                              toggleDevice(heaterState, 'heater', event)
+                            }
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            disabled={heaterLoader}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          today 7:54
+                        </Typography>
+                      </div>
                     </div>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -283,26 +327,40 @@ export default function Home() {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <div style={{ padding: '20px' }}>
-                      <Typography variant="h5" component="div">
-                        Varasto
-                      </Typography>
-                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        25ºC
-                      </Typography>
-                      {heaterLoader ? (
-                        <CircularProgress />
-                      ) : (
-                        <Switch
-                          {...switch_label}
-                          checked={heaterState}
-                          onChange={(event) =>
-                            toggleDevice(heaterState, 'heater', event)
-                          }
-                          inputProps={{ 'aria-label': 'controlled' }}
-                          disabled={heaterLoader}
-                        />
-                      )}
+                    <div
+                      style={{
+                        padding: '20px',
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div>
+                        <Typography variant="h5" component="div">
+                          Varasto
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          25ºC
+                        </Typography>
+                        {storageLoader ? (
+                          <CircularProgress />
+                        ) : (
+                          <Switch
+                            {...switch_label}
+                            checked={storageState}
+                            onChange={(event) =>
+                              toggleDevice(storageState, 'storage', event)
+                            }
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            disabled={storageLoader}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          today 8:54
+                        </Typography>
+                      </div>
                     </div>
                   </AccordionSummary>
                   <AccordionDetails>

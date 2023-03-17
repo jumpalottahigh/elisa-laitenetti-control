@@ -15,3 +15,27 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.MuiSwitch-root {
+  height: 70px !important;
+  margin-left: -20px;
+  padding: 22px !important;
+  width: 130px !important;
+}
+
+.MuiSwitch-switchBase {
+  padding: 16px !important;
+}
+
+.MuiSwitch-thumb {
+  height: 36px !important;
+  width: 36px !important;
+}
+
+.MuiSwitch-track {
+  border-radius: 60px !important;
+}
+
+.MuiSwitch-switchBase.Mui-checked {
+  transform: translateX(60px) !important;
+}
