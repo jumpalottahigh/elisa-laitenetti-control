@@ -110,42 +110,51 @@ export default function Home() {
 
     if (deviceName === 'sauna') {
       setSaunaLoader(true)
+      if (incomingState) {
+        handleDeviceTurnOff()
+      } else {
+        handleDeviceTurnOn()
+      }
     } else if (deviceName === 'heater') {
       setHeaterLoader(true)
+      if (incomingState) {
+        handleDeviceTurnOff()
+      } else {
+        handleDeviceTurnOn()
+      }
     } else if (deviceName === 'storage') {
       setStorageLoader(true)
+      if (incomingState) {
+        handleDeviceTurnOff()
+      } else {
+        handleDeviceTurnOn()
+      }
     }
 
     timeout = setTimeout(() => {
       if (deviceName === 'sauna') {
         if (incomingState) {
-          handleDeviceTurnOff()
           setSaunaState(false)
         } else {
-          handleDeviceTurnOn()
           setSaunaState(true)
         }
         setSaunaLoader(false)
       } else if (deviceName === 'heater') {
         if (incomingState) {
-          handleDeviceTurnOff()
           setHeaterState(false)
         } else {
-          handleDeviceTurnOn()
           setHeaterState(true)
         }
         setHeaterLoader(false)
       } else if (deviceName === 'storage') {
         if (incomingState) {
-          handleDeviceTurnOff()
           setStorageState(false)
         } else {
-          handleDeviceTurnOn()
           setStorageState(true)
         }
         setStorageLoader(false)
       }
-    }, 14000)
+    }, 12000)
   }
 
   React.useEffect(() => {
