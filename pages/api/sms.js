@@ -17,9 +17,9 @@ export default async function handler(req, res) {
     // Process the incoming SMS message as needed
 
     const newMessage = {
-      // user_id: user.id,
       message: Body,
       from: From,
+      date: new Date().toISOString(),
     }
 
     const table = supabase.from('smses')
