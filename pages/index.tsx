@@ -188,7 +188,7 @@ export default function Home() {
                       textAlign: 'center',
                     }}
                   >
-                    Elisa Laittenetti Control
+                    Elisa Laittenetti Control 2
                   </Typography>
                 </Toolbar>
               </AppBar>
