@@ -48,15 +48,9 @@ export default function Home() {
   const user = useUser()
   const session = useSession()
   const supabase = useSupabaseClient()
-  const [heaterState, setHeaterState] = React.useState(
-    Math.random() > 0.5 ? true : false
-  )
-  const [saunaState, setSaunaState] = React.useState(
-    Math.random() > 0.5 ? true : false
-  )
-  const [storageState, setStorageState] = React.useState(
-    Math.random() > 0.5 ? true : false
-  )
+  const [heaterState, setHeaterState] = React.useState(false)
+  const [saunaState, setSaunaState] = React.useState(false)
+  const [storageState, setStorageState] = React.useState(false)
   const [heaterLoader, setHeaterLoader] = React.useState(false)
   const [saunaLoader, setSaunaLoader] = React.useState(false)
   const [storageLoader, setStorageLoader] = React.useState(false)
