@@ -119,33 +119,33 @@ export default function Home() {
     timeout = setTimeout(() => {
       if (deviceName === 'sauna') {
         if (incomingState) {
-          handleDeviceTurnOn() // TODO: reenable
+          handleDeviceTurnOff()
           setSaunaState(false)
         } else {
-          handleDeviceTurnOff()
+          handleDeviceTurnOn()
           setSaunaState(true)
         }
         setSaunaLoader(false)
       } else if (deviceName === 'heater') {
         if (incomingState) {
-          handleDeviceTurnOn()
+          handleDeviceTurnOff()
           setHeaterState(false)
         } else {
-          handleDeviceTurnOff()
+          handleDeviceTurnOn()
           setHeaterState(true)
         }
         setHeaterLoader(false)
       } else if (deviceName === 'storage') {
         if (incomingState) {
-          handleDeviceTurnOn()
+          handleDeviceTurnOff()
           setStorageState(false)
         } else {
-          handleDeviceTurnOff()
+          handleDeviceTurnOn()
           setStorageState(true)
         }
         setStorageLoader(false)
       }
-    }, 12000)
+    }, 14000)
   }
 
   React.useEffect(() => {
@@ -188,7 +188,7 @@ export default function Home() {
                       textAlign: 'center',
                     }}
                   >
-                    Elisa Laittenetti Control 2
+                    Elisa Laittenetti Control
                   </Typography>
                 </Toolbar>
               </AppBar>
