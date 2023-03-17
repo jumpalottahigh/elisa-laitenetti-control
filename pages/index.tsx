@@ -9,8 +9,6 @@ import {
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
 
-import Footer from '../components/Footer'
-
 import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
@@ -28,6 +26,7 @@ import Chart from '../components/dashboard_components/Chart'
 import Grid from '@mui/material/Grid'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const switch_label = { inputProps: { 'aria-label': 'Switch label!' } }
 
@@ -49,6 +48,16 @@ export default function Home() {
   const user = useUser()
   const session = useSession()
   const supabase = useSupabaseClient()
+  const [heaterState, setHeaterState] = React.useState(
+    Math.random() > 0.5 ? true : false
+  )
+  const [saunaState, setSaunaState] = React.useState(
+    Math.random() > 0.5 ? true : false
+  )
+  const [heaterLoader, setHeaterLoader] = React.useState(false)
+  const [saunaLoader, setSaunaLoader] = React.useState(false)
+
+  let timeout = null
 
   const handleDeviceTurnOn = async () => {
     try {
@@ -98,6 +107,46 @@ export default function Home() {
     }
   }
 
+  const toggleDevice = (incomingState: boolean, deviceName, event) => {
+    event.stopPropagation()
+
+    if (deviceName === 'sauna') {
+      setSaunaLoader(true)
+    } else if (deviceName === 'heater') {
+      setHeaterLoader(true)
+    }
+
+    timeout = setTimeout(() => {
+      if (deviceName === 'sauna') {
+        if (incomingState) {
+          // handleDeviceTurnOn() // TODO: reenable
+          setSaunaState(false)
+        } else {
+          // handleDeviceTurnOff()
+          setSaunaState(true)
+        }
+        setSaunaLoader(false)
+      } else if (deviceName === 'heater') {
+        if (incomingState) {
+          // handleDeviceTurnOn()
+          setHeaterState(false)
+        } else {
+          // handleDeviceTurnOff()
+          setHeaterState(true)
+        }
+        setHeaterLoader(false)
+      }
+    }, 2000) // 12000
+  }
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [timeout])
+
+  console.log('states: ', saunaState, heaterState, saunaLoader, heaterLoader)
+
   return (
     <div>
       <Head>
@@ -111,7 +160,6 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
-        <h1>Elisa Laittenetti Control</h1>
         {!session ? (
           <Auth
             supabaseClient={supabase}
@@ -121,35 +169,55 @@ export default function Home() {
         ) : (
           <>
             <Box sx={{ flexGrow: 1 }}>
-              <AppBar position="static">
+              <AppBar position="static" sx={{ marginBottom: '20px' }}>
                 <Toolbar>
-                  <NavigateBeforeIcon />
-                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Mökki
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    sx={{
+                      flexGrow: 1,
+                      textAlign: 'center',
+                    }}
+                  >
+                    Elisa Laittenetti Control
                   </Typography>
-                  <NavigateNextIcon />
                 </Toolbar>
               </AppBar>
+              <Toolbar sx={{ textAlign: 'center', marginBottom: '20px' }}>
+                <NavigateBeforeIcon />
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  Mökki
+                </Typography>
+                <NavigateNextIcon />
+              </Toolbar>
               <div>
-                <button onClick={handleDeviceTurnOn}>Turn on</button>
-                <button onClick={handleDeviceTurnOff}>Turn off</button>
                 <Accordion>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <Card sx={{ minWidth: 275 }}>
-                      <CardContent>
-                        <Typography variant="h5" component="div">
-                          Sauna
-                        </Typography>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                          22ºC
-                        </Typography>
-                        <Switch {...switch_label} defaultChecked />
-                      </CardContent>
-                    </Card>
+                    <div style={{ padding: '20px' }}>
+                      <Typography variant="h5" component="div">
+                        Vaja
+                      </Typography>
+                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        22ºC
+                      </Typography>
+                      {saunaLoader ? (
+                        <CircularProgress />
+                      ) : (
+                        <Switch
+                          {...switch_label}
+                          checked={saunaState}
+                          onChange={(event) =>
+                            toggleDevice(saunaState, 'sauna', event)
+                          }
+                          inputProps={{ 'aria-label': 'controlled' }}
+                          disabled={saunaLoader}
+                        />
+                      )}
+                    </div>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Grid item xs={12} md={8} lg={9}>
@@ -169,27 +237,122 @@ export default function Home() {
                 <Accordion>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
                   >
-                    <Card sx={{ minWidth: 275 }}>
-                      <CardContent>
-                        <Typography variant="h5" component="div">
-                          Heater
-                        </Typography>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                          19ºC
-                        </Typography>
-                        <Switch {...switch_label} defaultChecked />
-                      </CardContent>
-                    </Card>
+                    <div style={{ padding: '20px' }}>
+                      <Typography variant="h5" component="div">
+                        Patteri
+                      </Typography>
+                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        21ºC
+                      </Typography>
+                      {heaterLoader ? (
+                        <CircularProgress />
+                      ) : (
+                        <Switch
+                          {...switch_label}
+                          checked={heaterState}
+                          onChange={(event) =>
+                            toggleDevice(heaterState, 'heater', event)
+                          }
+                          inputProps={{ 'aria-label': 'controlled' }}
+                          disabled={heaterLoader}
+                        />
+                      )}
+                    </div>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Suspendisse malesuada lacus ex, sit amet blandit leo
-                      lobortis eget.
-                    </Typography>
+                    <Grid item xs={12} md={8} lg={9}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: 240,
+                        }}
+                      >
+                        <Chart />
+                      </Paper>
+                    </Grid>
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <div style={{ padding: '20px' }}>
+                      <Typography variant="h5" component="div">
+                        Varasto
+                      </Typography>
+                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        25ºC
+                      </Typography>
+                      {heaterLoader ? (
+                        <CircularProgress />
+                      ) : (
+                        <Switch
+                          {...switch_label}
+                          checked={heaterState}
+                          onChange={(event) =>
+                            toggleDevice(heaterState, 'heater', event)
+                          }
+                          inputProps={{ 'aria-label': 'controlled' }}
+                          disabled={heaterLoader}
+                        />
+                      )}
+                    </div>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Grid item xs={12} md={8} lg={9}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: 240,
+                        }}
+                      >
+                        <Chart />
+                      </Paper>
+                    </Grid>
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion disabled>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <div style={{ padding: '20px' }}>
+                      <Typography variant="h5" component="div">
+                        Aitta
+                      </Typography>
+                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        --
+                      </Typography>
+                      <Switch
+                        {...switch_label}
+                        checked={false}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                      />
+                    </div>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Grid item xs={12} md={8} lg={9}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: 240,
+                        }}
+                      >
+                        <Chart />
+                      </Paper>
+                    </Grid>
                   </AccordionDetails>
                 </Accordion>
               </div>
@@ -197,7 +360,6 @@ export default function Home() {
           </>
         )}
       </main>
-      <Footer />
     </div>
   )
 }
